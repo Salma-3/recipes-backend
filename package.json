@@ -6,7 +6,8 @@
   "scripts": {
     "test": "export NODE_ENV=test && jest --detectOpenHandles --no-cache",
     "dev": "export NODE_ENV=development && nodemon app",
-    "production": "export NODE_ENV=production && node app"
+    "production": "export NODE_ENV=production && node app",
+    "start": "node app.js"
   },
   "jest": {
     "testEnvironment": "node",
