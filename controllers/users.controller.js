@@ -1,12 +1,14 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const config = require('config')
+//const config = require('config')
 const  { uploadFile } = require('../services/cloudinary')
 const Image  = require('../models/Image')
 const Recipe = require('../models/Recipe')
 const fs = require('fs')
 const {deleteImageById } = require('./image.controller')
+require('dotenv').config({path: `.env.${process.env.NODE_ENV}`})
+
 
 const isNameExist = async (req, res) => {
     try {
@@ -27,8 +29,6 @@ const create = async (req, res) => {
             return res.status(400).json({errors: [{msg: 'Email is registred'}]})
         }
 
-        
-
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(password, salt)
 
@@ -38,7 +38,7 @@ const create = async (req, res) => {
 
         const payload = {user: {id: usr._id}}
 
-        jwt.sign(payload, config.get('jwtSecret'), {expiresIn: 60 * 60 * 3}, (e, token)=> {
+        jwt.sign(payload, process.env.jwtSecret, {expiresIn: 60 * 60 * 3}, (e, token)=> {
            if(e){
                throw e
            }else{

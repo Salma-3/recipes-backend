@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "export NODE_ENV=test && jest --detectOpenHandles --no-cache",
-    "dev": "export NODE_ENV=development && nodemon app"
+    "dev": "export NODE_ENV=development && nodemon app",
+    "production": "export NODE_ENV=production && node app"
   },
   "jest": {
     "testEnvironment": "node",
@@ -22,6 +23,7 @@
     "config": "^3.3.6",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-validator": "^6.12.1",
     "jsonwebtoken": "^8.5.1",
