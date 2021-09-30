@@ -30,7 +30,7 @@ app.use('/api/images', require('./routes/images.routes'))
 app.use('/api/recipes', require('./routes/recipes.routes'))
 app.use('/api/contact', require('./routes/contact.routes'))
 
-const port = process.env.port //config.get('port')
+const port = process.env.port || process.env.PORT //config.get('port')
 //const env = config.util.getEnv('NODE_ENV').toUpperCase()
 
 app.listen(port, ()=> {
