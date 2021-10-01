@@ -5,7 +5,7 @@ require('dotenv').config({path: `.env.${process.env.NODE_ENV}`})
 const URI = process.env.MONGODB_URI
 
 async function connectDB(){
-    //console.log(URI)
+    console.log(URI)
     try {
         const options = {
             useNewUrlParser: true,
