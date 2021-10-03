@@ -10,8 +10,8 @@ async function connectDB(){
         const options = {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            ssl: true,
-            authSource: 'admin',
+            ssl: process.env.SSL,
+            // authSource: 'admin',
             retryWrites: true,
         }
         await mongoose.connect(URI, options)
