@@ -3,10 +3,13 @@ const cors = require('cors')
 //const config = require('config')
 const connectDB = require('./config/db')
 const cookieParser = require('cookie-parser')
+
+const sentry = require('./config/sentry')
 require('dotenv').config({path: `.env.${process.env.NODE_ENV}`})
 
 const app = express()
 
+sentry()
 
 connectDB()
 
@@ -34,7 +37,7 @@ app.use('/api/images', require('./routes/images.routes'))
 app.use('/api/recipes', require('./routes/recipes.routes'))
 app.use('/api/contact', require('./routes/contact.routes'))
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 3001
 //const env = config.util.getEnv('NODE_ENV').toUpperCase()
 
 app.listen(port, ()=> {
