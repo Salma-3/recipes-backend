@@ -1,8 +1,6 @@
 const Category = require('../models/Category')
-const {deleteImageById} = require('../controllers/image.controller')
 
-
-const DEFAULT_LIMIT = 20
+const categoryService = require('../services/category.service')
 
 const categoryById = async (req, res, next, id)=> {
    try {
@@ -28,8 +26,7 @@ const create = async (req, res)=> {
             return res.status(400).json({error: [{msg: 'The category is already exist'}]})
         }
 
-        cat  = new Category({name, image})
-        await cat.save()
+        cat  = await categoryService.create(image, name)
 
         return res.status(201).json(cat)
     } catch (err) {
@@ -44,20 +41,7 @@ const get = async (req, res) => {
 
 const list = async (req, res)=> {
     try {
-      const sort = req.query.sort || 'name'
-      const limit = req.query.limit || DEFAULT_LIMIT
-      const page = +req.query.page || 1
-      const offset = (page - 1) * limit;
-
-      const sortObj = {[sort[0] === '-' ? sort.substr(1, sort.length -1) : sort]: sort[0] === '-' ? -1 : 1};
-      //console.log(sortObj)
-      let categories;
-
-      if(limit === 'all'){
-           categories = await Category.find().sort(sortObj).populate('image')
-      }else{
-          categories = await Category.find().sort(sortObj).skip(offset).limit(parseInt(limit)).populate('image')
-      }
+      const {categories, page} = await categoryService.list(req.query)
 
       return res.status(200).json({categories, page})
 
@@ -70,7 +54,8 @@ const list = async (req, res)=> {
 const update = async (req, res)=> {
     try {
         const {name, image} = req.body;
-        const category = await Category.findByIdAndUpdate(req.category._id, {name, image}, {new: true});
+        
+        const category = await categoryService.update(req.category._id, name, image)
 
         res.status(200).json(category)
     } catch (err) {
@@ -82,10 +67,7 @@ const update = async (req, res)=> {
 
 const deleteOne = async (req, res)=> {
     try {
-        await Category.findByIdAndDelete(req.category._id)
-
-        //delete associated image
-        await deleteImageById(req.category.image._id)
+        await categoryService.deleteOne(req.params.id, req.category.image.id)
 
         res.status(200).json('Deleted')
     } catch (err) {
