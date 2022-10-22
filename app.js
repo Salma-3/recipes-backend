@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 //const config = require('config')
-const connectDB = require('./config/db')
+const connectDB = require('./db/connect')
 const cookieParser = require('cookie-parser')
 
 const sentry = require('./config/sentry')

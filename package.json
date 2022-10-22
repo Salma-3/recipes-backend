@@ -7,7 +7,9 @@
     "test": "export NODE_ENV=test && jest --detectOpenHandles --no-cache",
     "dev": "export NODE_ENV=development && nodemon app",
     "production": "export NODE_ENV=production && node app",
-    "start": "node app.js"
+    "start": "node app.js",
+    "seed": "export NODE_ENV=development && node db/seed.js",
+    "reset": "export NODE_ENV=development && node db/reset.js"
   },
   "jest": {
     "testEnvironment": "node",
@@ -35,8 +37,10 @@
     "slugify": "^1.6.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "cross-env": "^7.0.3",
     "jest": "^27.2.0",
-    "supertest": "^6.1.6"
+    "supertest": "^6.1.6",
+    "uuid": "^9.0.0"
   }
 }
