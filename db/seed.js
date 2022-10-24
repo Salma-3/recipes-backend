@@ -6,17 +6,19 @@ const User = require('../models/User')
 const imageService = require('../services/image.service')
 const categoryService = require('../services/category.service')
 const recipeService = require('../services/recipe.service')
-
+const bcrypt = require('bcryptjs')
 const { faker } = require('@faker-js/faker') 
 const { v4 } = require('uuid')
 
 
 //create user 
 const createUser = async () => {
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash('123456', salt)
     let user = new User({
-        email: "salma@test.com",
+        email: "salma8000@gmail.com",
         name: "Salma Test",
-        password: "123456"
+        password: hash
      })
     
     user = await user.save()   
@@ -46,9 +48,8 @@ const createCategories = async () => {
     const images = await createCategoryImages()
 
     let categories = ['desserts', 'beverages', 'main course', 'salads', 'sandwiches', 'seafood']
-    categories = categories.map(async (cat, index) => {
-        let category = await categoryService.create(images[index].id, cat)
-
+    .map(async (cat, index) => {
+        let category =  await categoryService.create(images[index].id, cat)
         return category
     })
 
@@ -92,7 +93,16 @@ const createRecipeImages = () => {
 const createRecipes = async () => {
     const user = await createUser()
 
+    console.log('===============================')
+    console.log('======== Created User =========')
+    console.log('===============================')
+
+
     const categories = await createCategories()
+
+    console.log('===============================')
+    console.log('===== Created Categories ======')
+    console.log('===============================')
 
     let images = await createRecipeImages()
 
@@ -172,6 +182,19 @@ const createRecipes = async () => {
 }
 
 
-mongoose.connect(process.env.MONGODB_URI, ()=> {
-    createRecipes()
-})
+(async ()=> {
+    await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true})
+
+    await createRecipes()
+
+    console.log('===============================')
+    console.log('======= Created Recipes =======')
+    console.log('===============================')
+
+})()
+
+
+// process.on('exit', function(){
+//     mongoose.disconnect()
+// })
+
