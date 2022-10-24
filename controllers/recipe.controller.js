@@ -83,7 +83,7 @@ const recipesByOwner = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const recipe = await recipeService.update(id, req.recipe, req.body)
+        const recipe = await recipeService.update(req.recipe.id, req.recipe, req.body)
 
         res.status(200).json(recipe)
     } catch (err) {
